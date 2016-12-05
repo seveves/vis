@@ -1,115 +1,36 @@
+/// <reference path="./interfaces/IData.d.ts" />
+/// <reference path="./interfaces/IOptions.d.ts" />
+/// <reference path="./interfaces/IPosition.d.ts" />
+/// <reference path="./interfaces/IdType.d.ts" />
 
 declare module network {
 
-    interface IOptions {
-    
-        /**
-          * @type {boolean}
-          */
-        autoResize: boolean;
-    
-        /**
-          * @type {string}
-          */
-        width: string;
-    
-        /**
-          * @type {string}
-          */
-        height: string;
-    
-        /**
-          * @type {string}
-          */
-        locale: string;
-    
-        /**
-          * @type {any} 
-          */
-        locales: any;
-    
-        /** 
-          * @type {boolean}
-          */
-        ckickToUse: boolean;
-    }
-
-    interface INetworkData {
-    
-        /**
-          * @type {any|any[]}
-          */
-        nodes: any|any[];
-    
-        /**
-          * @type {any|any[]}
-          */
-        edges: any|any[];
-    }
-
-    interface IPosition {
-    
-        /**
-          * @type {number}
-          */
-        x: number;
-    
-        /**
-          * @type {number}
-          */
-        y: number;
-    }
-
-    interface INetwork {
-    
-        /**
-          * @param {network.INetworkData} data
-          */
-        setData(data: network.INetworkData): void;
-    
-        /**
-          * @param {network.IOptions} options
-          */
-        setOptions(options: network.IOptions): void;
-    
-        /**
-          * @param {network.IPosition} position
-          * @return {network.IPosition}
-          */
-        canvasToDOM(position: network.IPosition): network.IPosition;
-    
-        /**
-          * @return {boolean}
-          */
-        isActive(): boolean;
-    
-        /**
-          * @param {string} width
-          * @param {string} height
-          */
-        setSize(width: string, height: string): void;
-    }
-
     class Network extends Network__Class { }
     /** Fake class which should be extended to avoid inheriting static properties */
-    class Network__Class implements INetwork  { 
+    class Network__Class  { 
     
             /**
              * @constructor
-             * @implements {INetwork}
              * @param {Element} container   The DOM element in which the Network will
-             *                                  be created. Normally a div element.
-             * @param {Object} data         An object containing parameters
-             *                              {Array} nodes
-             *                              {Array} edges
-             * @param {Object|number} options      Options
+             *                              be created. Normally a div element.
+             * @param {network.IData} data The network data (nodes and edges).
+             * @param {network.IOptions} options The network options.
              */
-            constructor(container: Element, data: Object, options: Object|number);
+            constructor(container: Element, data: network.IData, options: network.IOptions);
     
             /**
-             * Bind all events
+             * Set options
+             * @param {network.IOptions} options
              */
-            bindEventListeners(): void;
+            setOptions(options: network.IOptions): void;
+    
+            /**
+             * Set nodes and edges, and optionally options as well.
+             *
+             * @param {network.IData} data
+             *
+             */
+            setData(data: network.IData): void;
     
             /**
              * Cleans up all bindings of the network, removing it fully from the memory IF the variable is set to null after calling this function.
@@ -119,6 +40,47 @@ declare module network {
              * 
              */
             destroy(): void;
+    
+            /**
+             * @param {string} width The new width.
+             * @param {string} height The new height.
+             */
+            setSize(): void;
+    
+            /**
+             * @param {network.IPosition} position 
+             * @return {network.IPosition}
+             */
+            canvasToDOM(): network.IPosition;
+    
+            /**
+             * @param {network.IPosition} position 
+             * @return {network.IPosition}
+             */
+            DOMtoCanvas(): network.IPosition;
+    
+            /**
+             * @param {network.IdType} nodeId
+             * @return {network.IdType[]}
+             */
+            findNode(): network.IdType[];
+    
+            /**
+             * @param {network.IdType} nodeId
+             * @return {boolean}
+             */
+            isCluster(): boolean;
+    
+            /**
+             * @param {network.IdType} nodeId
+             * @param {network.IOpenClusterOptions2} options
+             */
+            openCluster(): void;
+    
+            /**
+             * @param {network.IClusterOptions} options
+             */
+            cluster(): void;
     } 
     
 }
